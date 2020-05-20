@@ -1,5 +1,6 @@
 """
-TODO: module docstring
+Main application file for aspenjames.dev
+see README.md for more information
 """
 
 import os
