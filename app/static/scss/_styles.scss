@@ -1,0 +1,32 @@
+$bgc-header: $bgc-body !default;
+
+.header {
+    background-color: $bgc-header;
+
+    &-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &-logo {
+        display: flex;
+        align-items: center;
+    }
+
+    &-nav {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        margin-right: -12px;
+
+        &Item {
+            margin: 0;
+            margin-right: $m-medium;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+}
