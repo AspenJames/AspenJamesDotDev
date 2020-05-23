@@ -27,11 +27,12 @@ class Home(HTTPEndpoint):
 
 
 async def recompile(request):
+    """Recompile scss assets"""
     try:
         compile_scss()
         return JSONResponse({'200': 'OK'})
     except Exception as e:
-        return JSONResponse({'error': e})
+        return JSONResponse({'error': str(e)})
 
 
 routes = [
