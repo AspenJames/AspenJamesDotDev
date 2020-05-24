@@ -17,7 +17,7 @@
 
   const getThemeFromCookie = (c) => c && c.split('=').pop();
 
-  const setThemeCookie = (t) => document.cookie = `ajTheme=${t}`;
+  const setThemeCookie = (t) => document.cookie = `ajTheme=${t};path=/;samesite=strict;max-age=${60*60*24*360}`;
 
   const setThemeLinkTag = (t) => {
     hrefArr = themeLinkTag.href.split('/');
