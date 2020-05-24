@@ -3,9 +3,6 @@ Main application file for aspenjames.dev
 see README.md for more information
 """
 
-import os
-import sass
-
 from starlette.applications import Starlette
 from starlette.endpoints import HTTPEndpoint
 from starlette.responses import JSONResponse
@@ -13,10 +10,18 @@ from starlette.routing import Mount
 from starlette.routing import Route
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
+from react.conf import settings
 
-app_dir = os.path.dirname(os.path.realpath(__file__))
+from .constants import STATIC_DIR
+from .constants import TEMPLATES_DIR
+from .blog.routes import routes as blog_routes
+from .utils import compile_scss
 
-templates = Jinja2Templates(directory='app/templates')
+templates = Jinja2Templates(directory=TEMPLATES_DIR)
+
+settings.configure(
+    RENDER_URL='http://node:9009/render'
+)
 
 
 class Home(HTTPEndpoint):
@@ -34,17 +39,13 @@ async def recompile(request):
     except Exception as e:
         return JSONResponse({'error': str(e)})
 
-
 routes = [
     Route("/", Home),
     Route("/recompile", recompile),
-    Mount('/static', app=StaticFiles(directory='app/static'), name='static'),
+    Mount('/blog', routes=blog_routes),
+    Mount('/static', app=StaticFiles(directory=STATIC_DIR), name='static'),
 ]
 
-def compile_scss():
-    sass.compile(dirname=('{}/static/scss'.format(app_dir),
-                        '{}/static/css'.format(app_dir)),
-                output_style='compressed')
 
 # Compile SCSS at boot
 compile_scss()

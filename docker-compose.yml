@@ -1,8 +1,17 @@
 version: '3.6'
 
 services:
+  node:
+    build:
+      context: ./
+      dockerfile: node.dockerfile
+    ports:
+      - "9009:9009"
+
   web:
-    build: .
+    build:
+      context: ./
+      dockerfile: web.dockerfile
     ports:
       - "80:80"
     volumes:
