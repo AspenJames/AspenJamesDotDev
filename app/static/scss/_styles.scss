@@ -3,6 +3,10 @@ $bgc-header: $bgc-body !default;
 .header {
     background-color: $bgc-header;
 
+    &-button {
+      margin: 0;
+    }
+
     &-inner {
         display: flex;
         align-items: center;

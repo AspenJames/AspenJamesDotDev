@@ -1,2 +1,20 @@
-$bgc-body: #333;
-$c-gray-light: #AED9BB;
+@import '../vendor/sierra-master/src/settings';
+
+$bgc-body: #232323;
+$c-info: #024b04;
+$c-button-transparent: #FFF;
+$c-button-outlined: #FFF;
+$c-body: #FEFEFE;
+
+$c-map: (
+  'primary':    $c-primary,
+  'dark':       $c-white,
+  'secondary':  $c-secondary,
+  'white':      $c-black,
+  'success':    $c-success,
+  'info':       $c-info,
+  'warning':    $c-warning,
+  'error':      $c-error,
+  'gray':       $c-gray-light,
+  'gray-light': $c-gray
+);

@@ -1,56 +1,73 @@
-const themeRegex = /^(dark|light)$/;
-const cookieRegex = /^ajTheme=(dark|light)$/;
-const themeLinkTag = document.querySelector('link[rel="stylesheet"]');
-const themeCheckbox = document.querySelector('#theme-checkbox');
+(function() {
+  const cookieRegex = /^ajTheme=(dark|light)$/;
+  const themeRegex  = /^(dark|light)$/;
+  const isDarkRegex = /dark/;
 
-const isValidTheme = (t) => themeRegex.test(t);
+  const themeLinkTag = document.querySelector('link[rel="stylesheet"]');
+  const themeButton  = document.querySelector('#theme-button');
+  const logoImg      = document.querySelector('#header-logoImage');
 
-const getThemeCookieFromDocument = () => document.cookie.split('; ').find(c => cookieRegex.test(c));
+  const isDark = (t) => isDarkRegex.test(t);
 
-const getThemeFromCookie = (c) => c && c.split('=').pop();
+  const isValidTheme = (t) => themeRegex.test(t);
 
-const setThemeCookie = (t) => document.cookie = `ajTheme=${t}`;
+  const getOppositeTheme = (t) => isDark(t) ? 'light' : 'dark';
 
-const setThemeLinkTag = (t) => {
-  hrefArr = themeLinkTag.href.split('/');
+  const getCookieFromDocument = () => document.cookie.split('; ').find(c => cookieRegex.test(c));
 
-  if (hrefArr[hrefArr.length - 1] === `${t}.css`)
-    return;
+  const getThemeFromCookie = (c) => c && c.split('=').pop();
 
-  hrefArr[hrefArr.length - 1] = `${t}.css`;
-  themeLinkTag.href = hrefArr.join('/');
-}
+  const setThemeCookie = (t) => document.cookie = `ajTheme=${t}`;
 
-const setThemeCheckbox = (t) => {
-  shouldCheck = t === 'dark';
-  themeCheckbox.checked = shouldCheck;
-}
+  const setThemeLinkTag = (t) => {
+    hrefArr = themeLinkTag.href.split('/');
 
-const setTheme = (t) => {
-  if (!isValidTheme(t))
-    return;
-  setThemeCookie(t);
-  setThemeLinkTag(t);
-  setThemeCheckbox(t);
-}
+    if (hrefArr[hrefArr.length - 1] === `${t}.css`)
+      return;
 
-const toggleTheme = (e) => {
-  if (e.target.checked) {
-    return setTheme('dark');
+    hrefArr[hrefArr.length - 1] = `${t}.css`;
+    themeLinkTag.href = hrefArr.join('/');
   }
-  return setTheme('light');
-}
 
+  const setThemeLogo = (t) => {
+    const logoSrcArr = logoImg.attributes.src.value.split('/');
+    const currentSrc = logoSrcArr.pop();
 
-let theme = null;
-const themeCookie = getThemeCookieFromDocument();
+    if (isDark(t)) {
+      if (isDark(currentSrc)) return;
+      logoSrcArr.push('logo-dark.png');
+    } else {
+      if (!isDark(currentSrc)) return;
+      logoSrcArr.push('favicon.ico');
+    }
 
+    logoImg.attributes.src.value = logoSrcArr.join('/');
+  }
 
-if (!themeCookie) {
-  theme = 'light';
-} else {
-  theme = getThemeFromCookie(themeCookie);
-}
+  const setThemeButton = (t) => {
+    themeButton.innerText = getOppositeTheme(t).toUpperCase();
+    themeButton.attributes['data-theme'].value = t;
+  }
 
-theme && setTheme(theme);
-themeCheckbox.addEventListener('change', toggleTheme)
+  const setTheme = (t) => {
+    if (!isValidTheme(t))
+      return setTheme('light');
+
+    setThemeCookie(t);
+    setThemeLinkTag(t);
+    setThemeLogo(t);
+    setThemeButton(t);
+  }
+
+  const toggleTheme = (e) => {
+    const currentTheme = e.target.attributes['data-theme'].value;
+    e.target.blur();
+    setTheme(getOppositeTheme(currentTheme));
+  }
+
+  let theme = null;
+  const themeCookie = getCookieFromDocument();
+  theme = themeCookie ? getThemeFromCookie(themeCookie) : 'light';
+  theme && setTheme(theme);
+  themeButton.addEventListener('click', toggleTheme);
+})();

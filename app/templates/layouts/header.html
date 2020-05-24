@@ -1,12 +1,11 @@
 <header class="header">
     <div class="header-inner container">
-        <a href="/" class="header-logo text-dark">
-            <img src="{{ url_for('static', path='favicon.ico') }}" alt="logo" class="header-logoImage">
-            <div class="checkbox">
-              <input id='theme-checkbox' name='isDarkTheme' type='checkbox' value='' checked>
-              <label for='theme-checkbox'>Dark theme</label>
-            </div>
-        </a>
+        <div class="header-inner">
+          <a href="/" class="header-logo text-dark">
+              <img src="{{ url_for('static', path='favicon.ico') }}" alt="logo" class="header-logoImage" id="header-logoImage">
+          </a>
+          <button class="button header-button button--small button--outlined" id="theme-button" data-theme=""></button>
+        </div>
         <ul class="header-nav">
             <li class="header-navItem"><a href="about" class="text-dark">About</a></li>
             <li class="header-navItem"><a href="resume" class="text-dark">Resume</a></li>
