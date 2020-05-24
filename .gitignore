@@ -7,3 +7,4 @@ venv/
 .vscode/
 
 app/node_modules/
+app/yarn.lock
